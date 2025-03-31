@@ -1,17 +1,5 @@
 import React, { useRef, useState } from 'react';
 import List from './list';
-// const getLocalItems = () => {
-//     let list = localStorage.getItem("data")
-//     console.log(list);
-//     if (list) {
-//         return JSON.parse(list)
-//     }
-//     else {
-//         return [];   }
-
-// }
-// getLocalItems()
-
 
 const Todo = () => {
     const [data, setData] = useState("")
@@ -42,9 +30,15 @@ const Todo = () => {
     const handleUpdate = (index) => {
         setIsClicked(false)
         let newList = [...list]
-        newList[index] = data
-        setList(newList)
-        setData("")
+        if(data){
+            newList[index] = data
+            setList(newList)
+            setData("")
+        }
+       else{
+        alert("Cant be empty")
+
+       }
 
 
     }
