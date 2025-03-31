@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import List from './list';
 
 const Todo = () => {
@@ -10,6 +10,9 @@ const Todo = () => {
     const handleBtn = () => {
         if (data !== "") {
             setList([...list, data])
+        //setting in local storage keeping first item also
+        localStorage.setItem('list', JSON.stringify([...list, data]))
+        // localStorage.setItem('list', JSON.stringify(list))
             setData("")
 
         }
@@ -18,6 +21,8 @@ const Todo = () => {
         let newList = [...list]
         newList.splice(key, 1)
         setList(newList)
+        //delete functionality in local storage
+        localStorage.setItem('list', JSON.stringify(newList))
     }
 
     const handleEdit = (item) => {
@@ -29,27 +34,38 @@ const Todo = () => {
 
     const handleUpdate = (index) => {
         setIsClicked(false)
-        let newList = [...list]
         if(data){
+            let newList = [...list]
             newList[index] = data
             setList(newList)
+            //update functionality in local storage
+            localStorage.setItem('list', JSON.stringify(newList))
             setData("")
         }
        else{
-        alert("Cant be empty")
+        alert("Cant be empty")      
 
        }
 
 
     }
+    //getting data from local storage now 
+    useEffect(() => {
+        const storedList = localStorage.getItem('list')
+        if (storedList) {
+            setList(JSON.parse(storedList))
+            }
+            console.log(storedList);
+            }, [])
+           
 
 
     return (
         <div className='bg-[#FFEDFA] h-screen '>
             <div className='container py-8 flex-col flex-wrap h-full justify-self-center w-1/2 '>
-                <div className='bg-[#4F959D] h-screen rounded-2xl pt-2.5'>
+                <div className='bg-[#4F959D] h-screen w-auto rounded-2xl pt-2.5'>
                     <h2 className='text-4xl text-white mt-5 ml-5 '>👋Getting Started</h2>
-                    <div >
+                    <div className='h-auto w-auto' >
                         <input type="text" placeholder="Enter your todo......" ref={inputBox} value={data} onChange={(e) => setData(e.target.value)} className="bg-black p-2 mt-10 ml-9 w-11/14 h-10 shadow-black shadow-2xl text-white rounded-2xl border-none outline-none placeholder:text-gray-100 focus:ring-2 focus:ring-green-600" />
                         <button className="bg-yellow-400 text-white ml-4 p-2 mt-8 rounded-2xl border-none outline-none hover:bg-yellow-500 " onClick={handleBtn} style={{display:isClicked?"none":"inline"}}>Add-To</button>
                         <div className=' content-div mt-8 flex-col justify-self-start w-11/12'>
