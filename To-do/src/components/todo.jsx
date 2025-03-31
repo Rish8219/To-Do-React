@@ -19,9 +19,8 @@ const Todo = () => {
         else {
             setList([...list, data.trim()])
             //validation for whiteSpace only 
-            if (data.trim() !== "") {
                 setData("");
-            }
+           
 
             //setting in local storage keeping first item also
             localStorage.setItem('list', JSON.stringify([...list, data]))
@@ -50,6 +49,7 @@ const Todo = () => {
         setIsClicked(true)
         inputBox.current.focus()
         setData(item)
+
 
 
 
@@ -99,8 +99,6 @@ const Todo = () => {
                                 return (
 
                                     <List key={index} list={list} item={item} index={index} handleDelete={handleDelete} handleEdit={handleEdit} handleUpdate={handleUpdate} isClicked={isClicked} />
-
-
 
                                 )
 
